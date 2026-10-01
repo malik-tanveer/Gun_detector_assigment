@@ -360,9 +360,6 @@ with tab_vid:
                 m3.metric("Detections", f"{len(rows):,}")
                 m4.metric("Alert frames", len({r["Frame"] for r in hits}))
                 st.video(res["video"])
-                if not res["playable"]:
-                    st.caption("ffmpeg was not found, so the preview may not play in your browser. "
-                               "Run `pip install imageio-ffmpeg` to fix this. The download works in any player.")
                 stem = Path(up_vid.name).stem
                 d1, d2 = st.columns(2)
                 d1.download_button("⬇️ Download result video", data=res["video"], file_name=f"{stem}_detected.mp4",
