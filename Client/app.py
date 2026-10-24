@@ -97,7 +97,7 @@ div[data-testid="stMetricLabel"]{{color:var(--muted);}}
 [data-testid="stImage"] img,[data-testid="stVideo"] video{{border-radius:16px;border:1px solid var(--line);}}
 </style>
 <div class="sv-hero">
-  <div><h1>🛡️ Sentinel Vision</h1>
+  <div><h1>Computer Vision</h1>
   <p>Upload an image or video. You get the detection result only, ready to download.</p></div>
   <span class="sv-pill">● Model ready · {len(NAMES)} classes</span>
 </div>
@@ -131,7 +131,7 @@ with st.sidebar:
         frame_step = st.select_slider("Video: analyze every Nth frame", [1, 2, 3, 5], value=2)
     with st.expander("Model classes"):
         st.write(", ".join(NAMES))
-    st.success("Model loaded")
+    st.success("Model Connected!")
 
 PARAMS = dict(conf=LEVELS[level], iou=iou, imgsz=imgsz, tta=tta, tiles=tiles, boxes=boxes,
               labels=labels, show_conf=show_conf, line=line, alert=tuple(sorted(alert)))
@@ -300,7 +300,6 @@ def process_video(data: bytes, step: int, p: dict, bar):
         return dict(video=out, rows=rows, duration=n / fps, analyzed=analyzed, playable=playable)
 
 
-# ---------------- TABS ----------------
 tab_img, tab_vid = st.tabs(["🖼️  Image", "🎬  Video"])
 
 with tab_img:
@@ -326,12 +325,12 @@ with tab_img:
             stem = Path(up_img.name).stem
             st.download_button("⬇️ Download result image", data=png, file_name=f"{stem}_detected.png",
                                mime="image/png", type="primary", **STRETCH)
-            if rows:
-                df = pd.DataFrame(rows)
-                st.download_button("⬇️ Download report (CSV)", data=df.to_csv(index=False).encode("utf-8"),
-                                   file_name=f"{stem}_report.csv", mime="text/csv", **STRETCH)
-                with st.expander("Detection details"):
-                    st.dataframe(df, hide_index=True, **STRETCH)
+            # if rows:
+            #     df = pd.DataFrame(rows)
+            #     st.download_button("⬇️ Download report (CSV)", data=df.to_csv(index=False).encode("utf-8"),
+            #                        file_name=f"{stem}_report.csv", mime="text/csv", **STRETCH)
+            #     with st.expander("Detection details"):
+            #         st.dataframe(df, hide_index=True, **STRETCH)
 
 with tab_vid:
     up_vid = st.file_uploader("Drop a video to detect", type=["mp4", "mov", "avi", "mkv"], key="video_upload")
